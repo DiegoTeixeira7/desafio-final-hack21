@@ -29,21 +29,37 @@ public class CardController {
     }
 
     @PostMapping
-    public ResponseEntity<Card> save(@RequestBody Card customer) {
-        Card savedCustomer = cardService.save((customer));
-        return new ResponseEntity(savedCustomer, HttpStatus.CREATED);
+    public ResponseEntity<Card> save(@RequestBody Card card) {
+        Card savedCard = cardService.save((card));
+        return new ResponseEntity(savedCard, HttpStatus.CREATED);
     }
 
-    @PutMapping
-    public ResponseEntity<Card> update(@RequestBody Card card) {
-        Optional<Card> existsCard = cardService.findById(card.getId());
+    @PutMapping("/{id}")
+    public ResponseEntity<Card> update(@PathVariable Long id, @RequestBody Card card) {
+        Optional<Card> existsCard = cardService.findById(id);
+
         if(existsCard.isEmpty()) {
-            return new ResponseEntity("User with that id " + card.getId() + " is not found!",
+            return new ResponseEntity("Card with that id " + id + " is not found!",
                     HttpStatus.NOT_FOUND);
         } else {
-            Card updateCard = cardService.update((card));
+            Card updateCard = card;
+            updateCard.setId(id);
+
+            updateCard = cardService.update((card));
             return new ResponseEntity(updateCard, HttpStatus.OK);
         }
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        Optional<Card> existsCard = cardService.findById(id);
+
+        if(existsCard.isEmpty()) {
+            return new ResponseEntity("Card with that id " + id + " is not found!",
+                    HttpStatus.NOT_FOUND);
+        } else {
+            cardService.deleteById(id);
+            return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+        }
+    }
 }
