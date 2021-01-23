@@ -71,7 +71,7 @@ public class CardController {
                     HttpStatus.NOT_FOUND);
         } else {
             cardService.deleteById(id);
-            return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity("Card deleted!" ,HttpStatus.OK);
         }
     }
 }
