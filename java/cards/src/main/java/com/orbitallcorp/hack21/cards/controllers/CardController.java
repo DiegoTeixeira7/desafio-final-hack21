@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -14,6 +15,12 @@ import java.util.Optional;
 public class CardController {
     @Autowired
     private CardService cardService;
+
+    @GetMapping
+    public ResponseEntity<List<Card>> findAll() {
+        List<Card> card = cardService.findAll();
+        return ResponseEntity.ok(card);
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Card>> findById(@PathVariable Long id) {
