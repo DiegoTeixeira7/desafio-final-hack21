@@ -20,12 +20,16 @@ public class CardService {
         return card;
     }
 
-    public Optional<Card> findById(Long cardId) {
-        return cardRepository.findById(cardId);
+    public Optional<Card> findById(Long id) {
+        return cardRepository.findById(id);
     }
 
     public Card save(Card card) {
         return cardRepository.save((card));
+    }
+
+    public Card update(Card card) {
+        return  cardRepository.save(card);
     }
 
 }

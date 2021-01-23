@@ -34,4 +34,16 @@ public class CardController {
         return new ResponseEntity(savedCustomer, HttpStatus.CREATED);
     }
 
+    @PutMapping
+    public ResponseEntity<Card> update(@RequestBody Card card) {
+        Optional<Card> existsCard = cardService.findById(card.getId());
+        if(existsCard.isEmpty()) {
+            return new ResponseEntity("User with that id " + card.getId() + " is not found!",
+                    HttpStatus.NOT_FOUND);
+        } else {
+            Card updateCard = cardService.update((card));
+            return new ResponseEntity(updateCard, HttpStatus.OK);
+        }
+    }
+
 }
