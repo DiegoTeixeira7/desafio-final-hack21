@@ -6,7 +6,11 @@ api.findAll = (request, response) => {
     if(err) {
       return response.status(500).json(err);
     } else {
-      return response.status(201).json(allCards);
+      if(allCards.length == 0) {
+        return response.status(204).send("Nenhum cartão encontrado!");
+      } else {
+        return response.status(201).json(allCards);
+      }
     }
   });
 }
@@ -67,6 +71,23 @@ api.update = (request, response) => {
 }
 
 api.delete = (request, response) => {
+  const id = request.params.id;
+
+  if(!id || !id.length) {
+    return response.status(404).send("Id inválido");
+  }
+
+  neDB.remove({ _id: id }, {}, (err, numRemoved) => {
+    if(err) {
+      return response.status(500).json(err);
+    } else {
+      if(numRemoved == 0) {
+        return response.status(404).send("Cartão não encontrado!");
+      } else {
+        return response.status(200).send("Removido com sucesso!");
+      }
+    }
+  });
 }
 
 api.findById = (request, response) => {
