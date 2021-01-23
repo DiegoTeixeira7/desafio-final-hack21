@@ -3,6 +3,7 @@ package com.orbitallcorp.hack21.cards.controllers;
 import com.orbitallcorp.hack21.cards.domains.Card;
 import com.orbitallcorp.hack21.cards.services.CardService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -73,5 +74,16 @@ public class CardController {
             cardService.deleteById(id);
             return new ResponseEntity("Card deleted!" ,HttpStatus.OK);
         }
+    }
+
+    @GetMapping("/paginationAndSorting")
+    public ResponseEntity<List<Card>> getAllCard(
+            @RequestParam(defaultValue = "0") Integer pageNo,
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "id") String sortBy)
+    {
+        List<Card> list = cardService.getAllCards(pageNo, pageSize, sortBy);
+
+        return new ResponseEntity<List<Card>>(list, new HttpHeaders(), HttpStatus.OK);
     }
 }
