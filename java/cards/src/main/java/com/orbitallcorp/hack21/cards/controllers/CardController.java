@@ -5,16 +5,21 @@ import com.orbitallcorp.hack21.cards.services.CardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/cards")
 public class CardController {
     @Autowired
     private CardService cardService;
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Optional<Card>> findById(@PathVariable Long id) {
+        Optional<Card> card = cardService.findById(id);
+        return ResponseEntity.ok(card);
+    }
 
     @PostMapping
     public ResponseEntity<Card> save(@RequestBody Card customer) {

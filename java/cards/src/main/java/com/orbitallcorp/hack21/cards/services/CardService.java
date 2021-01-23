@@ -5,10 +5,16 @@ import com.orbitallcorp.hack21.cards.repositories.CardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class CardService {
     @Autowired
     private CardRepository cardRepository;
+
+    public Optional<Card> findById(Long cardId) {
+        return cardRepository.findById(cardId);
+    }
 
     public Card save(Card card) {
         return cardRepository.save((card));
