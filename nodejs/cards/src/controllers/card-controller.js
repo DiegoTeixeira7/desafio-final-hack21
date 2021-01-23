@@ -68,6 +68,63 @@ api.save = (request, response) => {
 }
 
 api.update = (request, response) => {
+  const {cardNumber, embossName, customerName, 
+    documentNumber, motherName, address, city} = request.body;
+  const id = request.params.id;
+
+  if(!id || !id.length) {
+    return response.status(404).send("Id inválido");
+  }
+
+  if(!cardNumber || cardNumber < 0 ) {
+    return response.status(404).send("Número do cartão inválido!");
+  }
+
+  if(!embossName || !embossName.length) {
+    return response.status(404).send("Nome em relevo inválido!");
+  }
+
+  if(!customerName || !customerName.length) {
+    return response.status(404).send("Nome do cliente inválido!");
+  }
+
+  if(!documentNumber || documentNumber < 0 ) {
+    return response.status(404).send("Número do documento inválido!");
+  }
+
+  if(!motherName || !motherName.length) {
+    return response.status(404).send("Nome da mãe inválido!");
+  }
+
+  if(!address || !address.length) {
+    return response.status(404).send("Endereço inválido!");
+  }
+
+  if(!city || !city.length) {
+    return response.status(404).send("Cidade inválida!");
+  }
+
+  var card = {
+    cardNumber : cardNumber,
+    embossName : embossName,
+    customerName : customerName,
+    documentNumber : documentNumber,
+    motherName : motherName,
+    address : address,
+    city : city
+  };
+
+  neDB.update({_id : id}, { $set : card }, (err, numUpdate) => {
+    if(err) {
+      return response.status(500).json(err);
+    } else {
+      if(numUpdate == 0) {
+        return response.status(404).send("Cartão não encontrado!");
+      } else {
+        return response.status(200).json(card);
+      }
+    }
+  });
 }
 
 api.delete = (request, response) => {
