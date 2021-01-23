@@ -2,6 +2,7 @@ package com.orbitallcorp.hack21.cards.services;
 
 import com.orbitallcorp.hack21.cards.domains.Card;
 import com.orbitallcorp.hack21.cards.repositories.CardRepository;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -40,9 +41,9 @@ public class CardService {
     }
 
     public List<Card> getAllCards(Integer pageNo, Integer pageSize, String sortBy) {
-        Pageable paging = (Pageable) PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+        PageRequest paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
 
-        Page<Card> pagedResult = cardRepository.findAll((org.springframework.data.domain.Pageable) paging);
+        Page<Card> pagedResult = cardRepository.findAll(paging);
 
         if(pagedResult.hasContent()) {
             return pagedResult.getContent();
