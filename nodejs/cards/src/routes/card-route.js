@@ -4,13 +4,10 @@ module.exports = (app) => {
     app.route('/cards')
         .get(api.findAll)
         .post(api.save)
+        .get(api.getAllCards)
     
     app.route('/cards/:id')
         .put(api.update)
         .delete(api.delete)
         .get(api.findById)
-    
-    app.route('/cards/paginationAndSorting')
-        .get(api.getAllCard)
-
 }

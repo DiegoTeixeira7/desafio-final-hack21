@@ -167,7 +167,24 @@ api.findById = (request, response) => {
   });
 }
 
-api.getAllCard = (request, response) => {
+api.getAllCards = (request, response) => {
+  const pageOptions = {
+    page: parseInt(request.query.page, 10) || 0,
+    limit: parseInt(request.query.limit, 10) || 10,
+    //sort: request.query.sort ? request.query.sort : "_id"
+  }
+  
+  neDB.find({}).sort({'_id' : 1}).skip(pageOptions.page*pageOptions.limit).limit(pageOptions.limit).exec((err, allCards) => {
+    if(err) {
+      return response.status(500).json(err);
+    } else {
+      if(allCards.length == 0) {
+        return response.status(204).send("Nenhum cartão encontrado!");
+      } else {
+        return response.status(200).json(allCards);
+      }
+    }
+  });
 }
 
 module.exports = api
