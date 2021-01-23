@@ -91,6 +91,23 @@ api.delete = (request, response) => {
 }
 
 api.findById = (request, response) => {
+  const id = request.params.id;
+
+  if(!id || !id.length) {
+    return response.status(404).send("Id inválido");
+  }
+
+  neDB.findOne({_id: id}, (err, card) => {
+    if(err) {
+      return response.status(500).json(err);
+    } else {
+      if (card == null) {
+        return response.status(404).send("Cartão não encontrado!");
+      } else {
+        return response.status(200).json(card);
+      }
+    }
+  });
 }
 
 api.getAllCard = (request, response) => {
