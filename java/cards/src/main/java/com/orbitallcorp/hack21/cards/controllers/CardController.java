@@ -19,13 +19,25 @@ public class CardController {
     @GetMapping
     public ResponseEntity<List<Card>> findAll() {
         List<Card> card = cardService.findAll();
-        return ResponseEntity.ok(card);
+
+        if(card.isEmpty()) {
+            return new ResponseEntity("No card was found!",
+                    HttpStatus.NOT_FOUND);
+        } else {
+            return ResponseEntity.ok(card);
+        }
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Card>> findById(@PathVariable Long id) {
         Optional<Card> card = cardService.findById(id);
-        return ResponseEntity.ok(card);
+
+        if(card.isEmpty()) {
+            return new ResponseEntity("Card with that id " + id + " is not found!",
+                    HttpStatus.NOT_FOUND);
+        } else {
+            return ResponseEntity.ok(card);
+        }
     }
 
     @PostMapping
